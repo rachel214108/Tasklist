@@ -1,0 +1,28 @@
+CREATE DATABASE Tasks;
+
+USE Tasks;
+
+CREATE TABLE  Items (
+    Id INT NOT NULL AUTO_INCREMENT,
+    Name VARCHAR(100),
+    IsComplete TINYINT(1),
+    PRIMARY KEY (Id)
+);
+
+CREATE TABLE Users (
+    UserID INT PRIMARY KEY AUTO_INCREMENT,
+    Username VARCHAR(50) NOT NULL ,
+    Password VARCHAR(255) NOT NULL UNIQUE
+);
+
+ALTER TABLE Items 
+ADD COLUMN UserID INT , 
+ADD CONSTRAINT FK_Items_Users FOREIGN KEY (UserID) REFERENCES Users(UserID);
+
+
+INSERT INTO Users (Username, Password)
+VALUES ("26262", "123456799");
+INSERT INTO Users (Username, Password)
+VALUES ("111111", "1111");
+select *
+from Users;
