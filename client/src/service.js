@@ -32,7 +32,7 @@ export default {
   // Fetch all tasks
   getTasks: async () => {
     try {
-      const result = await axios.get('/Tasks/'); // 
+      const result = await axios.get('Tasks/'); // 
       return result.data;//מחזיר את הנתונים
     } catch (error) {
       console.error('Error fetching tasks:', error);
@@ -43,7 +43,7 @@ export default {
   // Add a new task
   addTask: async (name) => {
     try {
-      const result = await axios.post('/Task/', { name, isComplete: false }); // התאמה למבנה הנתונים של השרת
+      const result = await axios.post('Task/', { name, isComplete: false }); // התאמה למבנה הנתונים של השרת
       return result.data;//מחזיר את הנתונים שהתקבלו כתגובה
     } catch (error) {
       console.error('Error adding task:', error);
@@ -54,7 +54,7 @@ export default {
   // Update the completion status of a task
   setCompleted: async (id, isComplete) => {
     try {
-      const result = await axios.put(`/Task/${id}?IsComplete=${isComplete}`);
+      const result = await axios.put(`Task/${id}?IsComplete=${isComplete}`);
       return result.data;//מחזיא את הנתונים שהתקבלו כתגובה
     } catch (error) {
       console.error('Error updating task completion:', error);
@@ -65,7 +65,7 @@ export default {
   // Delete a task
   deleteTask: async (id) => {
     try {
-      await axios.delete(`/Task/${id}`);
+      await axios.delete(`Task/${id}`);
       return { success: true }; // מחזיר הצלחה
     } catch (error) {
       console.error('Error deleting task:', error);
@@ -77,7 +77,7 @@ export default {
 
   login: async (username, password) => {
     try {
-      const result = await axios.post('/Login', { username, password });
+      const result = await axios.post('Login', { username, password });
 
       return result.data;  // מחזיר את התגובה מהשרת (כולל הטוקן)
     } catch (error) {
@@ -88,7 +88,7 @@ export default {
   // Register
   register: async (username, password) => {
     try {
-      const result = await axios.post('/Register', { username, password });
+      const result = await axios.post('Register', { username, password });
       return result.data;//המרת הנתונים כתגובה
     } catch (error) {
       throw error;

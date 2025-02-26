@@ -19,17 +19,15 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigins", builder =>
     {
-
-        // builder.AllowAnyOrigin()
-         builder.WithOrigins("https://tasklistclient-nadl.onrender.com") 
-       .AllowAnyMethod() // מאפשר שימוש בכל שיטה (GET, POST, PUT וכו')
-       .AllowAnyHeader(); // מאפשר כל כותרת
+        builder.AllowAnyOrigin()
+        .AllowAnyMethod() // מאפשר שימוש בכל שיטה (GET, POST, PUT וכו')
+        .AllowAnyHeader(); // מאפשר כל כותרת
     });
 });
 
 //contact to mysql
 builder.Services.AddDbContext<ToDoDbContext>(options =>
-    options.UseMySql(builder.Configuration["ConnectionStrings__Tasks"],
+    options.UseMySql(builder.Configuration["ConnectionStrings:Tasks"],
                      new MySqlServerVersion(new Version(8, 0, 40))));
 
 //  קביעת אוטנטיקציה באמצעות jwt
@@ -160,5 +158,3 @@ app.MapPost("/Login", async (User login, ToDoDbContext context, JwtService jwtSe
 });
 
 app.Run();
-
-
