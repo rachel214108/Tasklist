@@ -32,7 +32,7 @@ public partial class ToDoDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.ToTable("items");
+            entity.ToTable("Items");
 
             entity.HasIndex(e => e.UserId, "FK_Items_Users");
 
@@ -49,7 +49,7 @@ public partial class ToDoDbContext : DbContext
             entity.HasKey(e => e.UserId).HasName("PRIMARY");
 
             entity.ToTable("Users");
-            
+
 
             entity.HasIndex(e => e.Password, "Password").IsUnique();
 

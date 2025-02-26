@@ -70,7 +70,7 @@ app.MapGet("/", () => "Auther Api is Running");
 app.MapGet("/Tasks", async (HttpContext httpContext, ToDoDbContext context) =>
 {
     // חילוץ מזהה המשתמש
-    var userId = int.Parse(httpContext.User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value);
+     var userId = int.Parse(httpContext.User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value);
     // שליפת כל המשימות שקשורת למשתמש הנוכחי
     var tasks = await context.Items.Where(i => i.UserId == userId).ToListAsync();
     return Results.Ok(tasks);
