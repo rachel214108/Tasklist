@@ -16,13 +16,13 @@ var jwtIssuer = builder.Configuration["Jwt:Issuer"];
 //cors
 builder.Services.AddCors(options =>
 {
-   options.AddPolicy("AllowAllOrigins", builder =>
-   {
-             //  builder.WithOrigins("http://localhost:3000")
-            builder.AllowAnyOrigin()
-            .AllowAnyMethod() // מאפשר שימוש בכל שיטה (GET, POST, PUT וכו')
-            .AllowAnyHeader(); // מאפשר כל כותרת
-   });
+    options.AddPolicy("AllowAllOrigins", builder =>
+    {
+
+        builder.AllowAnyOrigin()
+       .AllowAnyMethod() // מאפשר שימוש בכל שיטה (GET, POST, PUT וכו')
+       .AllowAnyHeader(); // מאפשר כל כותרת
+    });
 });
 
 //contact to mysql
@@ -31,27 +31,27 @@ builder.Services.AddDbContext<ToDoDbContext>(options =>
                      new MySqlServerVersion(new Version(8, 0, 40))));
 
 //  קביעת אוטנטיקציה באמצעות jwt
-    builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
     {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-           ValidateIssuer = true, // לאמת את המנפיק של הטוקן
-            ValidateAudience = true, // לאמת את הקהל של הטוקן
-            ValidateLifetime = true, // לאמת את זמן החיים של הטוקן
-            ValidateIssuerSigningKey = true, // לאמת את מפתח החתימה של הטוקן
-            ValidIssuer = jwtIssuer, // הגדרת המנפיק המותר
-            ValidAudience = jwtIssuer, // הגדרת הקהל המותר
+        ValidateIssuer = true, // לאמת את המנפיק של הטוקן
+        ValidateAudience = true, // לאמת את הקהל של הטוקן
+        ValidateLifetime = true, // לאמת את זמן החיים של הטוקן
+        ValidateIssuerSigningKey = true, // לאמת את מפתח החתימה של הטוקן
+        ValidIssuer = jwtIssuer, // הגדרת המנפיק המותר
+        ValidAudience = jwtIssuer, // הגדרת הקהל המותר
 
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))// יצירת מפתח החתימה
-        };
-    });
-    
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))// יצירת מפתח החתימה
+    };
+});
+
 //הזרקת תליות 
 builder.Services.AddScoped<JwtService>();
-builder.Services.AddControllers();
+// builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();                     
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 // הפעלת אוטנטיקציה ואישור- jwt
@@ -75,7 +75,7 @@ app.MapPost("/Task", async (HttpContext httpContext, Item item, ToDoDbContext co
     // חילוץ מזהה המשתמש
     var userId = int.Parse(httpContext.User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value);
     // שיוך המשימה למשתמש הנוכחי
-    item.UserId = userId; 
+    item.UserId = userId;
     // הוספת משימה 
     context.Items.Add(item);
     // שמירת שינויים
@@ -87,7 +87,7 @@ app.MapPut("/Task/{id}", async (HttpContext httpContext, int id, bool IsComplete
 {
     // חילוץ מזהה המשתמש
     var userId = int.Parse(httpContext.User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value);
-     // חיפוש המשימה של המשתמש לפי מזהה
+    // חיפוש המשימה של המשתמש לפי מזהה
     var item = await context.Items.FirstOrDefaultAsync(i => i.Id == id && i.UserId == userId);
     // אם לא קיים המשימה 
     if (item is null) return Results.NotFound();
@@ -101,7 +101,7 @@ app.MapPut("/Task/{id}", async (HttpContext httpContext, int id, bool IsComplete
 // DELETETask
 app.MapDelete("/Task/{id}", async (HttpContext httpContext, int id, ToDoDbContext context) =>
 {
- 
+
     // חילוץ מזהה המשתמש
     var userId = int.Parse(httpContext.User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value);
     //שליפת המשימה שצריכה להמחק
@@ -135,7 +135,7 @@ app.MapPost("/Register", async (User user, ToDoDbContext context, JwtService jwt
 
 
 // Login
-  app.MapPost("/Login", async (User login, ToDoDbContext context, JwtService jwtService) =>
+app.MapPost("/Login", async (User login, ToDoDbContext context, JwtService jwtService) =>
 {
     // בדיקת שם המשתמש במסד הנתונים
     var user = await context.Users.FirstOrDefaultAsync(u => u.Username == login.Username);
@@ -152,14 +152,15 @@ app.MapPost("/Register", async (User user, ToDoDbContext context, JwtService jwt
 });
 
 //Swagger
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// if (app.Environment.IsDevelopment())
+// {
+app.UseSwagger();
+app.UseSwaggerUI();
+app.UseHttpsRedirection();
+// }
 
 // Redirect to Swagger homepage
-app.MapGet("/", () => Results.Redirect("/swagger"));
+ app.MapGet("/", () => "Auther Api is Running");
 
 app.Run();
 
