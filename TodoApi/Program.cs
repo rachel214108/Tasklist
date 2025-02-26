@@ -27,8 +27,9 @@ builder.Services.AddCors(options =>
 
 //contact to mysql
 builder.Services.AddDbContext<ToDoDbContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("Tasks"),
+    options.UseMySql(builder.Configuration["ConnectionStrings__Tasks"],
                      new MySqlServerVersion(new Version(8, 0, 40))));
+
 //  קביעת אוטנטיקציה באמצעות jwt
     builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
