@@ -54,11 +54,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+app.UseCors("AllowAllOrigins"); // הפעלת CORS 
 // הפעלת אוטנטיקציה ואישור- jwt
 app.UseAuthentication();
 app.UseAuthorization();
-// קביעת cors
-app.UseCors("AllowAllOrigins");
+
 //Swagger
 app.UseSwagger();
 app.UseSwaggerUI();

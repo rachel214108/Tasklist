@@ -3,7 +3,7 @@
 import axios from 'axios';
 
 // Set default API URL (change it if needed)
-const apiUrl = process.env.REACT_APP_API_URL; // URL מתאים לשרת שלך
+const apiUrl = process.env.REACT_APP_API_URL || "https://tasklistseveracheli.onrender.com"; // URL מתאים לשרת שלך
 axios.defaults.baseURL = apiUrl;
 
 axios.interceptors.request.use(config => {
