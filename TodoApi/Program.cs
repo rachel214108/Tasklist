@@ -67,7 +67,7 @@ app.UseHttpsRedirection();
 app.MapGet("/", () => "Auther Api is Running");
 
 //getTask
-app.MapGet("https://tasklistclient-nadl.onrender.com/Tasks", async (HttpContext httpContext, ToDoDbContext context) =>
+app.MapGet("/https://tasklistseveracheli.onrender.com/Tasks", async (HttpContext httpContext, ToDoDbContext context) =>
 {
     // חילוץ מזהה המשתמש
     var userId = int.Parse(httpContext.User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value);
@@ -76,7 +76,7 @@ app.MapGet("https://tasklistclient-nadl.onrender.com/Tasks", async (HttpContext 
     return Results.Ok(tasks);
 });
 //postTask
-app.MapPost("https://tasklistclient-nadl.onrender.com/Task", async (HttpContext httpContext, Item item, ToDoDbContext context) =>
+app.MapPost("/https://tasklistseveracheli.onrender.com/Task", async (HttpContext httpContext, Item item, ToDoDbContext context) =>
 {
     // חילוץ מזהה המשתמש
     var userId = int.Parse(httpContext.User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value);
@@ -89,7 +89,7 @@ app.MapPost("https://tasklistclient-nadl.onrender.com/Task", async (HttpContext 
     return Results.Created($"/tasks/{item.Id}", item);
 });
 //PutTask
-app.MapPut("https://tasklistclient-nadl.onrender.com/Task/{id}", async (HttpContext httpContext, int id, bool IsComplete, ToDoDbContext context) =>
+app.MapPut("/https://tasklistseveracheli.onrender.com/Task/{id}", async (HttpContext httpContext, int id, bool IsComplete, ToDoDbContext context) =>
 {
     // חילוץ מזהה המשתמש
     var userId = int.Parse(httpContext.User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value);
@@ -105,7 +105,7 @@ app.MapPut("https://tasklistclient-nadl.onrender.com/Task/{id}", async (HttpCont
 });
 
 // DELETETask
-app.MapDelete("https://tasklistclient-nadl.onrender.com/Task/{id}", async (HttpContext httpContext, int id, ToDoDbContext context) =>
+app.MapDelete("/https://tasklistseveracheli.onrender.com/Task/{id}", async (HttpContext httpContext, int id, ToDoDbContext context) =>
 {
 
     // חילוץ מזהה המשתמש
@@ -121,7 +121,7 @@ app.MapDelete("https://tasklistclient-nadl.onrender.com/Task/{id}", async (HttpC
 });
 
 // Register
-app.MapPost("https://tasklistclient-nadl.onrender.com/Register", async (User user, ToDoDbContext context, JwtService jwtService) =>
+app.MapPost("/https://tasklistseveracheli.onrender.com/Register", async (User user, ToDoDbContext context, JwtService jwtService) =>
 {
     // בדיקת שם המשתמש במסד הנתונים
     var existingUser = await context.Users.FirstOrDefaultAsync(u => u.Username == user.Username);
@@ -141,7 +141,7 @@ app.MapPost("https://tasklistclient-nadl.onrender.com/Register", async (User use
 
 
 // Login
-app.MapPost("https://tasklistclient-nadl.onrender.com/Login", async (User login, ToDoDbContext context, JwtService jwtService) =>
+app.MapPost("/https://tasklistseveracheli.onrender.com/Login", async (User login, ToDoDbContext context, JwtService jwtService) =>
 {
     // בדיקת שם המשתמש במסד הנתונים
     var user = await context.Users.FirstOrDefaultAsync(u => u.Username == login.Username);
