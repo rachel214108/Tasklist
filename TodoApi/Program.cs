@@ -11,6 +11,7 @@ using BCrypt.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 //Configuration- הגדרת קונפיגורציה
+
 var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY");
 var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER");
 //cors
@@ -19,7 +20,8 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAllOrigins", builder =>
     {
 
-        builder.AllowAnyOrigin()
+        // builder.AllowAnyOrigin()
+         builder.WithOrigins("https://tasklistclient-nadl.onrender.com") 
        .AllowAnyMethod() // מאפשר שימוש בכל שיטה (GET, POST, PUT וכו')
        .AllowAnyHeader(); // מאפשר כל כותרת
     });
@@ -67,7 +69,7 @@ app.UseHttpsRedirection();
 app.MapGet("/", () => "Auther Api is Running");
 
 //getTask
-app.MapGet("/https://tasklistseveracheli.onrender.com/Tasks", async (HttpContext httpContext, ToDoDbContext context) =>
+app.MapGet("/Tasks", async (HttpContext httpContext, ToDoDbContext context) =>
 {
     // חילוץ מזהה המשתמש
     var userId = int.Parse(httpContext.User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value);
@@ -76,7 +78,7 @@ app.MapGet("/https://tasklistseveracheli.onrender.com/Tasks", async (HttpContext
     return Results.Ok(tasks);
 });
 //postTask
-app.MapPost("/https://tasklistseveracheli.onrender.com/Task", async (HttpContext httpContext, Item item, ToDoDbContext context) =>
+app.MapPost("/Task", async (HttpContext httpContext, Item item, ToDoDbContext context) =>
 {
     // חילוץ מזהה המשתמש
     var userId = int.Parse(httpContext.User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value);
@@ -89,7 +91,7 @@ app.MapPost("/https://tasklistseveracheli.onrender.com/Task", async (HttpContext
     return Results.Created($"/tasks/{item.Id}", item);
 });
 //PutTask
-app.MapPut("/https://tasklistseveracheli.onrender.com/Task/{id}", async (HttpContext httpContext, int id, bool IsComplete, ToDoDbContext context) =>
+app.MapPut("/Task/{id}", async (HttpContext httpContext, int id, bool IsComplete, ToDoDbContext context) =>
 {
     // חילוץ מזהה המשתמש
     var userId = int.Parse(httpContext.User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value);
@@ -105,7 +107,7 @@ app.MapPut("/https://tasklistseveracheli.onrender.com/Task/{id}", async (HttpCon
 });
 
 // DELETETask
-app.MapDelete("/https://tasklistseveracheli.onrender.com/Task/{id}", async (HttpContext httpContext, int id, ToDoDbContext context) =>
+app.MapDelete("/Task/{id}", async (HttpContext httpContext, int id, ToDoDbContext context) =>
 {
 
     // חילוץ מזהה המשתמש
@@ -121,7 +123,7 @@ app.MapDelete("/https://tasklistseveracheli.onrender.com/Task/{id}", async (Http
 });
 
 // Register
-app.MapPost("/https://tasklistseveracheli.onrender.com/Register", async (User user, ToDoDbContext context, JwtService jwtService) =>
+app.MapPost("/Register", async (User user, ToDoDbContext context, JwtService jwtService) =>
 {
     // בדיקת שם המשתמש במסד הנתונים
     var existingUser = await context.Users.FirstOrDefaultAsync(u => u.Username == user.Username);
@@ -141,7 +143,7 @@ app.MapPost("/https://tasklistseveracheli.onrender.com/Register", async (User us
 
 
 // Login
-app.MapPost("/https://tasklistseveracheli.onrender.com/Login", async (User login, ToDoDbContext context, JwtService jwtService) =>
+app.MapPost("/Login", async (User login, ToDoDbContext context, JwtService jwtService) =>
 {
     // בדיקת שם המשתמש במסד הנתונים
     var user = await context.Users.FirstOrDefaultAsync(u => u.Username == login.Username);
