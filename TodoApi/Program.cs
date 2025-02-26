@@ -64,6 +64,7 @@ app.UseSwaggerUI();
 app.UseHttpsRedirection();
 
 app.MapGet("/", () => "Auther Api is Running");
+
 //getTask
 app.MapGet("/Tasks", async (HttpContext httpContext, ToDoDbContext context) =>
 {
