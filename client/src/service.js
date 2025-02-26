@@ -3,7 +3,7 @@
 import axios from 'axios';
 
 // Set default API URL (change it if needed)
-const apiUrl = process.env.REACT_APP_API_URL || "https://tasklistseveracheli.onrender.com"; // URL מתאים לשרת שלך
+const apiUrl = process.env.REACT_APP_API_URL; // URL מתאים לשרת שלך
 axios.defaults.baseURL = apiUrl;
 
 
@@ -44,7 +44,7 @@ export default {
   // Add a new task
   addTask: async (name) => {
     try {
-      const result = await axios.post('/Task/', { name, isComplete: false }); // התאמה למבנה הנתונים של השרת
+      const result = await axios.post('/Task', { name, isComplete: false }); // התאמה למבנה הנתונים של השרת
       return result.data;//מחזיר את הנתונים שהתקבלו כתגובה
     } catch (error) {
       console.error('Error adding task:', error);
