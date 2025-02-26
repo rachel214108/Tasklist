@@ -49,7 +49,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 //הזרקת תליות 
 builder.Services.AddScoped<JwtService>();
-// builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -59,7 +58,12 @@ app.UseAuthentication();
 app.UseAuthorization();
 // קביעת cors
 app.UseCors("AllowAllOrigins");
+//Swagger
+app.UseSwagger();
+app.UseSwaggerUI();
+app.UseHttpsRedirection();
 
+app.MapGet("/", () => "Auther Api is Running");
 //getTask
 app.MapGet("/Tasks", async (HttpContext httpContext, ToDoDbContext context) =>
 {
@@ -150,17 +154,6 @@ app.MapPost("/Login", async (User login, ToDoDbContext context, JwtService jwtSe
     // var token = jwtService.GenerateToken(user.Username);
     return Results.Ok(new { Token = token });
 });
-
-//Swagger
-// if (app.Environment.IsDevelopment())
-// {
-app.UseSwagger();
-app.UseSwaggerUI();
-app.UseHttpsRedirection();
-// }
-
-// Redirect to Swagger homepage
- app.MapGet("/", () => "Auther Api is Running");
 
 app.Run();
 
