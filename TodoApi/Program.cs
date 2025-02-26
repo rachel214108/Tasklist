@@ -11,8 +11,10 @@ using BCrypt.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 //Configuration- הגדרת קונפיגורציה
-var jwtKey = builder.Configuration["Jwt:Key"];
-var jwtIssuer = builder.Configuration["Jwt:Issuer"];
+// var jwtKey = builder.Configuration["Jwt:Key"];
+// var jwtIssuer = builder.Configuration["Jwt:Issuer"];
+var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY");
+var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER");
 //cors
 builder.Services.AddCors(options =>
 {

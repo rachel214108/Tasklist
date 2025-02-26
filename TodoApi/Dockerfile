@@ -4,6 +4,12 @@ EXPOSE 80
 EXPOSE 443
 
 ENV ASPNETCORE_URLS=http://+:80
+# הגדרת משתני סביבה מ-Docker
+ENV JWT_KEY="Rachely - Wertheimer - 214365108!!"
+ENV JWT_ISSUER="http://localhost:3000/"
+
+# המשך קוד Docker...
+
 
 FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 ARG configuration=Release
