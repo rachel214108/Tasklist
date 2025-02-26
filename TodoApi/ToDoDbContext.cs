@@ -48,7 +48,8 @@ public partial class ToDoDbContext : DbContext
         {
             entity.HasKey(e => e.UserId).HasName("PRIMARY");
 
-            entity.ToTable("users");
+            entity.ToTable("Users");
+            
 
             entity.HasIndex(e => e.Password, "Password").IsUnique();
 

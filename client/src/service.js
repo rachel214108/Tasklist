@@ -6,6 +6,7 @@ import axios from 'axios';
 const apiUrl = process.env.REACT_APP_API_URL || "https://tasklistseveracheli.onrender.com"; // URL מתאים לשרת שלך
 axios.defaults.baseURL = apiUrl;
 
+
 axios.interceptors.request.use(config => {
   const token = localStorage.getItem('token');  // קבלת הטוקן מ-LocalStorage
   if (token) {
